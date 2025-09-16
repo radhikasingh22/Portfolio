@@ -523,6 +523,29 @@ document.querySelectorAll('.scene').forEach((sceneEl, idx) => {
 });
 
 
+// ---- Ensure page is always usable when returning via Back/Forward ----
+function resetZoomUI() {
+  // Remove zooming class & fader overlay
+  document.body.classList.remove('zooming');
+  const fader = document.getElementById('zoom-fader');
+  if (fader) fader.remove();
+
+  // Re-enable interaction and clear any blur on every scene viewer
+  document.querySelectorAll('.viewer').forEach(v => {
+    v.style.pointerEvents = '';
+    const bg = v.querySelector('.bg');
+    if (bg) bg.style.filter = '';
+  });
+}
+
+// Run on page restore (bfcache), on normal show, and when leaving
+window.addEventListener('pageshow', resetZoomUI);   // fires on BFCache restore too
+window.addEventListener('popstate', resetZoomUI);   // extra safety on back/forward
+window.addEventListener('visibilitychange', () => { // if we come back from another tab
+  if (!document.hidden) resetZoomUI();
+});
+window.addEventListener('pagehide', resetZoomUI);   // clear state before navigating away
+
 
 // ===== First-scroll snap: from absolute top -> jump to next .scene, then normal scrolling =====
 (function setupFirstScrollSnap(){
