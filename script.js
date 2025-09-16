@@ -763,7 +763,7 @@ window.addEventListener('touchmove', e=>{
   dragDist += Math.abs(dx);                // NEW
   dragSum  += dx;   
   if (!arrowsHidden && Math.abs(dragSum) > CLICK_SLOP) hideArrowsOnce();  // <-- add this line
-  yaw = norm(yaw + dx*0.0003);
+  yaw = norm(yaw + dx*0.0006);
 }, {passive:true});
 
 
