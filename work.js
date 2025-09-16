@@ -547,7 +547,7 @@ function initScene(root, PROJECTS_FOR_SCENE, PILLAR_SPREAD = 0.55) {
     lastX = t.clientX;
     lastDX = dx;
     dragDist += Math.abs(dx);
-    yaw = norm(yaw - dx*0.0003);
+    yaw = norm(yaw - dx*0.0006);
   }, {passive:true});
 
   // start the scene’s loop when the image is ready
