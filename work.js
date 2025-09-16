@@ -1,19 +1,26 @@
-// ---- Always refresh when returning via Back/Forward ----
-(function hardRefreshOnBFCache(){
-  // Most browsers: pageshow with persisted === true means BFCache restore
+// ---- Refresh exactly once when returning via Back/Forward ----
+(function refreshOnceOnBack() {
+  const KEY = '__didBackRefresh';
+
   window.addEventListener('pageshow', (e) => {
-    if (e.persisted) {
-      window.location.reload();
+    const navs = performance.getEntriesByType ? performance.getEntriesByType('navigation') : null;
+    const nav  = navs && navs[0];
+    const viaBF = e.persisted || (nav && nav.type === 'back_forward');
+    const already = sessionStorage.getItem(KEY) === '1';
+
+    if (viaBF && !already) {
+      sessionStorage.setItem(KEY, '1');   // guard BEFORE navigating to avoid loops
+      location.reload();                  // clean reload; nav.type will be "reload" next time
+      return;
+    }
+
+    // On normal or reload navigations, clear the guard
+    if (!viaBF || (nav && nav.type === 'reload')) {
+      sessionStorage.removeItem(KEY);
     }
   });
-
-  // Chrome et al: explicit navigation type check (also covers some edge cases)
-  const nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
-  if (nav && nav.type === 'back_forward') {
-    // If we arrived here via back/forward, reload once
-    window.location.reload();
-  }
 })();
+
 
 
 // Scene 1 now has P1–P6
@@ -219,9 +226,24 @@ function initScene(root, PROJECTS_FOR_SCENE, PILLAR_SPREAD = 0.55) {
   let dragStartTotal = 0, pressX = 0, pressY = 0, dragDist = 0;
 
   // build image per scene (can be shared too if you want)
+// build image per scene
   const panoImg = new Image();
   panoImg.crossOrigin = "anonymous";
+
+  let renderStarted = false;
+  const startRender = () => {
+    if (!renderStarted) {
+      renderStarted = true;
+      requestAnimationFrame(render);
+    }
+  };
+
+  // ✅ attach listeners BEFORE setting src, and guard for cache hits
+  panoImg.addEventListener('load', startRender, { once: true });
+  panoImg.addEventListener('error', startRender, { once: true });
   panoImg.src = "backpano.png";
+  if (panoImg.complete) startRender();   // if it was cached, kick render immediately
+
 
   function createPillarEl(label, url, imageUrl){
     const wrap = document.createElement('div');
@@ -538,6 +560,13 @@ document.querySelectorAll('.scene').forEach((sceneEl, idx) => {
   const projectsForThisScene = idx === 0 ? PROJECTS_S1 : PROJECTS_S2;
   const spreadForThisScene   = idx === 0 ? SPREAD_S1   : SPREAD_S2;
   initScene(sceneEl, projectsForThisScene, spreadForThisScene);
+});
+
+window.addEventListener('pageshow', () => {
+  document.body.classList.remove('zooming');
+  const f = document.getElementById('zoom-fader');
+  if (f) f.remove();
+  document.querySelectorAll('.viewer .bg').forEach(bg => bg.style.filter = '');
 });
 
 
