@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Portfolio — Subpage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="about.css" />
+</head>
+<body>
+  <!-- Custom Cursor -->
+  <div id="cursor" aria-hidden="true">
+    <div class="cursor-ring"></div>
+    <div class="cursor-dot"></div>
+  </div>
+
+  <div id="app">
+    <!-- Top-left pill button (Back to Universe) -->
+    <nav id="top-left" aria-label="Secondary action">
+      <a class="icon-btn pill-btn" href="index.html" aria-label="Back to Universe">
+        <span>Back to Universe</span>
+      </a>
+    </nav>
+
+    <nav id="top-actions" aria-label="Primary actions">
+      <a class="icon-btn" href="work.html" aria-label="Work" data-tip="Work">
+        <i class="img-icon" aria-hidden="true" style="--icon: url('workbut.png')"></i>
+      </a>
+      <a class="icon-btn" href="https://drive.google.com/drive/folders/1TiXYe-oBep44RfTCTqjNOQPcQJZ8eogf" aria-label="Resume" data-tip="Resume">
+        <i class="img-icon" aria-hidden="true" style="--icon: url('resumebut.png')"></i>
+      </a>
+      <a class="icon-btn" href="about.html" aria-label="About Me" data-tip="About Me">
+        <i class="img-icon" aria-hidden="true" style="--icon: url('aboutbut2.png')"></i>
+      </a>
+      <a class="icon-btn" href="contact.html" aria-label="Contact" data-tip="Contact Me">
+        <i class="img-icon" aria-hidden="true" style="--icon: url('contactbut4.png')"></i>
+      </a>
+    </nav>
+
+    <!-- Header now only contains the title -->
+    <header id="page-title">
+      <h1>About Me</h1>
+    </header>
+
+    <!-- Image container moved OUTSIDE the centered header -->
+    <div class="about-img-container">
+      <img src="about3.png" alt="Radhika Singh" class="about-img">
+    </div>
+
+    <!-- Unified, controllable text box -->
+    <section id="about-textbox" aria-label="About Radhika">
+      <p>
+        I’m Radhika Singh, a product designer who enjoys solving problems where usability meets impact. My design journey has taken me from rethinking accessibility for government platforms, to building inclusive tools that help students with disabilities navigate campuses with ease.
+      </p>
+      <br>
+      <p>
+        What excites me most is translating complex research into simple, human-centered experiences. Whether it’s uncovering hidden dark patterns in social media apps, prototyping for early-stage startups, or scaling design for national platforms, I approach every project with the same question: How can design make this easier, fairer, and more meaningful for the people using it?
+      </p>
+      <br>
+      <p>
+        Outside of product work, I’ve nurtured a community of 28K+ design enthusiasts through my illustration page, a space where I explore visual storytelling and creative identity. This balance between rigor and play keeps my practice sharp, grounded, and adaptable across domains.
+      </p>
+      <br>
+      <p>
+        I see myself not just as someone who makes interfaces, but as a designer who helps teams ask better questions, challenge assumptions, and build trust through design.
+      </p>
+    </section>
+
+    <!-- Viewer with pano canvas -->
+    <div id="viewer" aria-label="360 viewer">
+      <canvas id="bg" width="800" height="600"></canvas>
+      <!-- Put your subpage content below if needed -->
+    </div>
+  </div>
+
+  <script src="about.js" type="module"></script>
+</body>
+</html>
