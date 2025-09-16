@@ -1,3 +1,21 @@
+// ---- Always refresh when returning via Back/Forward ----
+(function hardRefreshOnBFCache(){
+  // Most browsers: pageshow with persisted === true means BFCache restore
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      window.location.reload();
+    }
+  });
+
+  // Chrome et al: explicit navigation type check (also covers some edge cases)
+  const nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+  if (nav && nav.type === 'back_forward') {
+    // If we arrived here via back/forward, reload once
+    window.location.reload();
+  }
+})();
+
+
 // Scene 1 now has P1–P6
 const PROJECTS_S1 = [
   { label: 'SugamyaWeb Website<br>Monitoring App', url: 'proj4.html', imageUrl: 'p5.png' },
@@ -521,30 +539,6 @@ document.querySelectorAll('.scene').forEach((sceneEl, idx) => {
   const spreadForThisScene   = idx === 0 ? SPREAD_S1   : SPREAD_S2;
   initScene(sceneEl, projectsForThisScene, spreadForThisScene);
 });
-
-
-// ---- Ensure page is always usable when returning via Back/Forward ----
-function resetZoomUI() {
-  // Remove zooming class & fader overlay
-  document.body.classList.remove('zooming');
-  const fader = document.getElementById('zoom-fader');
-  if (fader) fader.remove();
-
-  // Re-enable interaction and clear any blur on every scene viewer
-  document.querySelectorAll('.viewer').forEach(v => {
-    v.style.pointerEvents = '';
-    const bg = v.querySelector('.bg');
-    if (bg) bg.style.filter = '';
-  });
-}
-
-// Run on page restore (bfcache), on normal show, and when leaving
-window.addEventListener('pageshow', resetZoomUI);   // fires on BFCache restore too
-window.addEventListener('popstate', resetZoomUI);   // extra safety on back/forward
-window.addEventListener('visibilitychange', () => { // if we come back from another tab
-  if (!document.hidden) resetZoomUI();
-});
-window.addEventListener('pagehide', resetZoomUI);   // clear state before navigating away
 
 
 // ===== First-scroll snap: from absolute top -> jump to next .scene, then normal scrolling =====
