@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Document (Image)</title>
+
+  <!-- Shared visuals from Page 1 (icon-btn styles, img-icon masks, etc.) -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Page 2-specific layout tweaks -->
+  <link rel="stylesheet" href="proj1.css" />
+</head>
+<body>
+
+  <!-- Custom Cursor (same wrapper as Page 1) -->
+  <div id="cursor">
+    <div class="cursor-ring"></div>
+    <div class="cursor-dot"></div>
+  </div>
+
+  <!-- Moving pano background (behind everything) -->
+  <canvas class="bg" id="pano"></canvas>
+
+  <!-- The scroller. We put the top bars INSIDE so they scroll away. -->
+  <main id="viewer">
+
+    <!-- Top-left pill button -->
+    <nav id="top-left" aria-label="Secondary action">
+      <a class="icon-btn pill-btn" href="index.html" aria-label="Back to Universe">
+        <span>Back to Universe</span>
+      </a>
+    </nav>
+
+    <!-- Top-right circular buttons -->
+    <nav id="top-actions" aria-label="Primary actions">
+      <a class="icon-btn" href="work.html" aria-label="Work" data-tip="Work">
+        <i class="img-icon" aria-hidden="true" style="--icon:url('workbut.png')"></i>
+      </a>
+      <a class="icon-btn" href="https://drive.google.com/drive/folders/1TiXYe-oBep44RfTCTqjNOQPcQJZ8eogf"
+         aria-label="Resume" data-tip="Resume">
+        <i class="img-icon" aria-hidden="true" style="--icon:url('resumebut.png')"></i>
+      </a>
+      <a class="icon-btn" href="about.html" aria-label="About Me" data-tip="About Me">
+        <i class="img-icon" aria-hidden="true" style="--icon:url('aboutbut2.png')"></i>
+      </a>
+      <a class="icon-btn" href="contact.html" aria-label="Contact" data-tip="Contact Me">
+        <i class="img-icon" aria-hidden="true" style="--icon:url('contactbut4.png')"></i>
+      </a>
+    </nav>
+
+    <!-- Your long image -->
+    <img id="doc" src="pann.png" alt="Document" />
+
+  </main>
+
+
+  <!-- Keep your existing behavior JS the same as Page 2 currently has -->
+  <script src="proj1.js" defer></script>
+</body>
+</html>
