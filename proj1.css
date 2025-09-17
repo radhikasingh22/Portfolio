@@ -1,25 +1,126 @@
+/* ===== Base page layout (unchanged behavior) ===== */
 :root { color-scheme: dark; }
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
-body { background: #0a0f18; color: #e9ecf8; font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+body { background:#0a0f18; color:#e9ecf8; font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial; }
 
-.topbar { position: sticky; top: 0; padding: 10px 14px; background: rgba(10,15,24,.8); backdrop-filter: blur(6px); border-bottom: 1px solid #1e293b; z-index: 10; }
-.topbar h1 { margin: 0; font-size: 16px; font-weight: 600; }
-
-#viewer { 
-  width: 100vw; 
-  max-width: 100vw; 
-  margin: 0 auto; 
-  padding: 16px; 
+/* Pano sits behind everything */
+.bg#pano {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
 }
 
+/* Make the PAGE not scroll; the viewer is the scroller (matches Page 1 pattern) */
+body { overflow: hidden; }
+
+/* The scroller that fills the viewport */
+#viewer {
+  position: fixed;
+  inset: 0;                /* fill viewport */
+  z-index: 1;
+  overflow: auto;          /* internal scroll here */
+  padding: 16px;
+  background: transparent;
+
+  /* keep content below the top bars */
+  --topbar-safe: clamp(72px, 12vh, 120px);
+  padding-top: var(--topbar-safe);
+}
+
+/* Your document image */
 #viewer img#doc {
   display: block;
-  width: 80%;          /* Fit sides to screen width */
-  height: auto;        /* preserve aspect ratio; scroll takes care of length */
+  width: 80%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
   image-rendering: auto;
-  margin-left: auto;   /* center horizontally */
-  margin-right: auto;  /* center horizontally */
 }
 
-.hint { text-align: center; padding: 16px; opacity: 0.7; }
+.hint { text-align:center; padding:16px; opacity:.7; }
+
+/* ===== Header buttons — identical sizing/feel as Page 1, but they scroll away ===== */
+/* Put the bars INSIDE #viewer (done in HTML) and position them absolutely so they
+   are part of the scrolled content and disappear when you scroll down. */
+#top-actions,
+#top-left {
+  position: absolute;  /* key: not fixed */
+  top: 2vh;
+  z-index: 6;
+}
+#top-actions {
+  right: 1vw;
+  display: flex;
+  gap: 1vw;
+  align-items: center;
+}
+#top-left { left: 1vw; }
+
+/* Button sizes via vw like Page 1.
+   Use content-box so the 1px border doesn’t shrink the visual circle. */
+#top-actions .icon-btn,
+#top-left  .icon-btn {
+  box-sizing: content-box;   /* parity with Page 1’s visual size */
+  --size: 2.5vw;
+  width: var(--size);
+  height: var(--size);
+}
+
+/* Pill “Back to Universe” — same height/typography as Page 1 */
+#top-left .icon-btn.pill-btn {
+  box-sizing: content-box;
+  --size: 3.2vw;             /* pill height */
+  height: var(--size);
+  max-height: 50px;
+  min-width: 140px;
+  padding: 0 18px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+#top-left .icon-btn.pill-btn span {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: .2px;
+  color: #e8f0ff;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Scale the glyph with the button size token (overrides the default 32px) */
+#top-actions .icon-btn .img-icon,
+#top-left    .icon-btn .img-icon {
+  width:  calc(var(--size) * 0.5);
+  height: calc(var(--size) * 0.5);
+  display: block;
+}
+
+/* Hide native cursor on fine pointers (keeps your custom cursor look) */
+@media (pointer:fine){
+  html, body { cursor: none; }
+}
+.cursor-ring { display: none; } /* if you only want the dot */
+
+/* Mobile parity with Page 1 */
+@media (max-width:640px){
+  #top-actions { top: 12px; right: 12px; gap: 10px; }
+  #top-left    { top: 12px; left: 12px; }
+
+  #top-actions .icon-btn,
+  #top-left    .icon-btn { --size: 54px; }
+
+  #top-left .icon-btn.pill-btn {
+    --size: 42px;
+    height: var(--size);
+    min-width: 120px;
+    padding: 0 14px;
+    border-radius: 12px;
+  }
+  #top-left .icon-btn.pill-btn span { font-size: 14px; }
+}
