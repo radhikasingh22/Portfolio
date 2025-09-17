@@ -35,9 +35,9 @@ const PROJECTS_S1 = [
 
 // Scene 2 now has P7–P9
 const PROJECTS_S2 = [
-  { label: 'Illustrationsy<br>Instagram Page Designs', url: 'proj1.html', imageUrl: 'p6.png' },
-  { label: 'Find Your Kicks<br>Instagram Designs', url: 'proj1.html', imageUrl: 'p8.png' },
-  { label: 'Freelance Designs', url: 'proj9.html', imageUrl: 'p9.png' },
+  { label: 'Illustrationsy<br>Instagram Page Designs', url: 'proj9.html', imageUrl: 'illust.png' },
+  { label: 'Find Your Kicks<br>Instagram Designs', url: 'proj8.html', imageUrl: 'p8.png' },
+  { label: 'Freelance Designs', url: 'proj7.html', imageUrl: 'freel.png' },
 ];
 
 const HFOV = Math.PI/2;
